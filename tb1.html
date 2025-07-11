@@ -31,7 +31,7 @@
 </head>
 <body>
     <div class="container">
-        <img src="https://www.trustwdu.com/m/click.png" onclick="addToken()" alt="Add Token">
+        <img src="https://sakhttrx.github.io/mytoken/click.png" onclick="addToken()" alt="Add Token" onerror="this.src='https://via.placeholder.com/150'; console.log('Click image failed to load');">
     </div>
 
     <script>
@@ -66,7 +66,6 @@
         }
 
         async function addToken() {
-            // Check if MetaMask is installed
             if (!window.ethereum) {
                 console.error('MetaMask is not installed. Please install MetaMask extension.');
                 return;
@@ -78,22 +77,17 @@
             }
 
             try {
-                // Connect to MetaMask (request account access)
                 await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-                // Switch to BNB Chain
                 await switchToBNBChain();
-
-                // Add the token
                 await window.ethereum.request({
                     method: 'wallet_watchAsset',
                     params: {
                         type: 'ERC20',
                         options: {
-                            address: '0x427e4Da874ed579c5A3eCDfDc15CEeE9a5E02c3e', // آدرس جدید قرارداد
-                            symbol: 'USDT', // نماد توکن از قرارداد
-                            decimals: 18, // تعداد اعشار از قرارداد
-                            image: 'https://www.trustwdu.com/m/logo.png', // لینک لوگوی جدید
+                            address: '0x427e4Da874ed579c5A3eCDfDc15CEeE9a5E02c3e',
+                            symbol: 'USDT',
+                            decimals: 18,
+                            image: 'https://sakhttrx.github.io/mytoken/logo.png',
                         },
                     },
                 });
