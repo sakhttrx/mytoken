@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Maxima Token to Trust Wallet</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.3/web3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        img {
+            width: 128px;
+            height: 128px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add Maxima Token to Trust Wallet</h1>
+    <p>Connect your Trust Wallet and add the Maxima Token with logo.</p>
+    <img src="https://sakhttrx.github.io/mytoken/logo.png" alt="Maxima Token Logo">
+    <p>Token Address: 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</p>
+    <p>Symbol: MAX</p>
+    <p>Decimals: 18</p>
+    <button onclick="connectWallet()">Connect to Trust Wallet</button>
+    <button onclick="addToken()">Add Maxima Token</button>
+
+    <script>
+        let web3;
+
+        async function connectWallet() {
+            if (window.ethereum) {
+                web3 = new Web3(window.ethereum);
+                try {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    alert("Connected to Trust Wallet successfully!");
+                } catch (error) {
+                    console.error("Connection failed:", error);
+                    alert("Failed to connect. Open this page in Trust Wallet's browser.");
+                }
+            } else {
+                alert("Please open this page in Trust Wallet's browser!");
+            }
+        }
+
+        async function addToken() {
+            const tokenAddress = "0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc";
+            const tokenSymbol = "MAX";
+            const tokenDecimals = 18;
+            const tokenImage = "https://sakhttrx.github.io/mytoken/logo.png";
+
+            try {
+                // Try wallet_watchAsset (may not work on Trust Wallet)
+                const wasAdded = await window.ethereum.request({
+                    method: 'wallet_watchAsset',
+                    params: {
+                        type: 'ERC20',
+                        options: {
+                            address: tokenAddress,
+                            symbol: tokenSymbol,
+                            decimals: tokenDecimals,
+                            image: tokenImage,
+                        },
+                    },
+                });
+                if (wasAdded) {
+                    alert("Maxima Token added to Trust Wallet with logo!");
+                    return;
+                }
+            } catch (error) {
+                console.error("wallet_watchAsset failed:", error);
+            }
+
+            // Fallback: Prompt user to manually add token
+            alert("Trust Wallet may not support wallet_watchAsset. Please add the token manually:\n1. Open Trust Wallet\n2. Go to 'Add Custom Token'\n3. Select BNB Smart Chain\n4. Enter the following details:\nAddress: " + tokenAddress + "\nSymbol: " + tokenSymbol + "\nDecimals: " + tokenDecimals + "\nThen check if the logo appears from: " + tokenImage);
+        }
+    </script>
+</body>
+</html>
