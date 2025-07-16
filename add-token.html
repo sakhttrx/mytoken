@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Maxima Token</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #qrcode {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>اسکن کن تا توکن Maxima رو اضافه کنی</h2>
+    <p>یا دستی اطلاعات زیر رو در Trust Wallet وارد کن</p>
+    <ul style="text-align: left; display: inline-block; text-align: left;">
+        <li><b>شبکه:</b> BNB Smart Chain</li>
+        <li><b>Address:</b> 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</li>
+        <li><b>Symbol:</b> MAX</li>
+        <li><b>Decimals:</b> 18</li>
+    </ul>
+    <div id="qrcode"></div>
+
+    <script>
+        const tokenInfo = `
+Address: 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc
+Symbol: MAX
+Decimals: 18
+Network: BNB Smart Chain
+        `;
+        QRCode.toCanvas(document.getElementById('qrcode'), tokenInfo, {
+            width: 256
+        }, function (error) {
+            if (error) console.error(error);
+        });
+    </script>
+</body>
+</html>
