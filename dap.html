@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Maxima Token to Trust Wallet</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.3/web3.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,95 +33,53 @@
             margin: 10px 0;
             font-size: 14px;
         }
+        #tokenInfo {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px;
+        }
     </style>
 </head>
 <body>
     <h1>Add Maxima Token to Trust Wallet</h1>
     <p>Add the Maxima Token to your Trust Wallet.</p>
     <img src="https://sakhttrx.github.io/mytoken/logo.png" alt="Maxima Token Logo" onerror="this.src='https://via.placeholder.com/128';">
-    <div class="info">
-        <p>Token Address: 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</p>
+    <div class="info" id="tokenInfo">
+        <p>Token Address: <span id="tokenAddress">0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</span></p>
         <p>Symbol: MAX</p>
         <p>Decimals: 18</p>
+        <p>Logo URL: <span id="tokenImage">https://sakhttrx.github.io/mytoken/logo.png</span></p>
     </div>
     <button onclick="addToken()">Add Maxima Token</button>
+    <button onclick="copyTokenInfo()">Copy Token Info</button>
 
     <script>
         const tokenAddress = "0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc";
         const tokenSymbol = "MAX";
         const tokenDecimals = 18;
         const tokenImage = "https://sakhttrx.github.io/mytoken/logo.png";
-        const bnbChainId = "0x38"; // BNB Smart Chain
-
-        // Check if we're in Trust Wallet's browser
-        const isTrustWallet = navigator.userAgent.includes("Trust");
-
-        async function switchToBNBChain() {
-            if (!window.ethereum) return false;
-            try {
-                await window.ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: bnbChainId }],
-                });
-                return true;
-            } catch (switchError) {
-                if (switchError.code === 4902) {
-                    try {
-                        await window.ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: bnbChainId,
-                                chainName: 'Binance Smart Chain',
-                                nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
-                                rpcUrls: ['https://bsc-dataseed.binance.org/'],
-                                blockExplorerUrls: ['https://bscscan.com'],
-                            }],
-                        });
-                        return true;
-                    } catch (addError) {
-                        console.error('Error adding BNB Chain:', addError);
-                        return false;
-                    }
-                }
-                console.error('Error switching to BNB Chain:', switchError);
-                return false;
-            }
-        }
+        const bnbChainId = "56"; // BNB Smart Chain (decimal)
 
         async function addToken() {
-            // First, try wallet_watchAsset if in Trust Wallet browser
-            if (isTrustWallet && window.ethereum) {
-                try {
-                    await switchToBNBChain();
-                    const wasAdded = await window.ethereum.request({
-                        method: 'wallet_watchAsset',
-                        params: {
-                            type: 'ERC20',
-                            options: {
-                                address: tokenAddress,
-                                symbol: tokenSymbol,
-                                decimals: tokenDecimals,
-                                image: tokenImage,
-                            },
-                        },
-                    });
-                    if (wasAdded) {
-                        alert("Maxima Token successfully added to Trust Wallet!");
-                        return;
-                    }
-                } catch (error) {
-                    console.error("wallet_watchAsset failed:", error);
-                }
-            }
-
             // Try Trust Wallet deep link
-            const deepLink = `trust://add_custom_asset?type=token&contract=${tokenAddress}&symbol=${tokenSymbol}&decimals=${tokenDecimals}&image=${encodeURIComponent(tokenImage)}&chainId=56`;
+            const deepLink = `trust://add_custom_asset?type=token&contract=${tokenAddress}&symbol=${tokenSymbol}&decimals=${tokenDecimals}&image=${encodeURIComponent(tokenImage)}&chainId=${bnbChainId}`;
             window.location.href = deepLink;
 
-            // Fallback after 2 seconds if deep link doesn't work
+            // Fallback after 3 seconds
             setTimeout(() => {
-                alert(`Could not add token automatically. Please add it manually in Trust Wallet:\n1. Open Trust Wallet\n2. Tap on "Manage Tokens"\n3. Select "Add Custom Token"\n4. Choose BNB Smart Chain\n5. Enter these details:\nAddress: ${tokenAddress}\nSymbol: ${tokenSymbol}\nDecimals: ${tokenDecimals}\nLogo URL: ${tokenImage}`);
-            }, 2000);
+                alert(`Could not add token automatically. Please add it manually:\n1. Open Trust Wallet\n2. Tap "Manage Tokens" or "+" icon\n3. Select "Add Custom Token"\n4. Choose BNB Smart Chain\n5. Enter these details:\nAddress: ${tokenAddress}\nSymbol: ${tokenSymbol}\nDecimals: ${tokenDecimals}\nLogo URL: ${tokenImage}\n\nYou can copy the details using the "Copy Token Info" button.`);
+            }, 3000);
+        }
+
+        function copyTokenInfo() {
+            const text = `Token Address: ${tokenAddress}\nSymbol: ${tokenSymbol}\nDecimals: ${tokenDecimals}\nLogo URL: ${tokenImage}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Token details copied to clipboard! Paste them in Trust Wallet under 'Add Custom Token'.");
+            }).catch(err => {
+                console.error("Failed to copy:", err);
+                alert("Failed to copy. Please manually copy the token details.");
+            });
         }
     </script>
 </body>
