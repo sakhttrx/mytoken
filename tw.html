@@ -58,6 +58,11 @@
       max-width: 200px;
       height: auto;
     }
+    .error {
+      color: red;
+      text-align: center;
+      margin-top: 10px;
+    }
     @media (max-width: 600px) {
       .container {
         padding: 15px;
@@ -84,11 +89,26 @@
       <p><strong>تعداد اعشار:</strong> 18</p>
       <p><strong>شبکه:</strong> BNB Smart Chain (BEP-20)</p>
     </div>
-    <a href="trust://add_custom_asset?address=0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc&decimals=18&symbol=MAX&name=Maxima&chainId=56" class="btn">افزودن به Trust Wallet</a>
+    <a href="wc://bnb?request=addAsset&address=0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc&symbol=MAX&decimals=18&name=Maxima&chainId=56" id="addTokenBtn" class="btn">افزودن به Trust Wallet</a>
     <div class="qr-code">
       <p>یا QR کد زیر را با Trust Wallet اسکن کنید:</p>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=trust%3A%2F%2Fadd_custom_asset%3Faddress%3D0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc%26decimals%3D18%26symbol%3DMAX%26name%3DMaxima%26chainId%3D56" alt="QR Code for Maxima Token">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=wc%3A%2F%2Fbnb%3Frequest%3DaddAsset%26address%3D0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc%26symbol%3DMAX%26decimals%3D18%26name%3DMaxima%26chainId%3D56" alt="QR Code for Maxima Token">
     </div>
+    <p id="errorMsg" class="error" style="display: none;"></p>
   </div>
+  <script>
+    document.getElementById('addTokenBtn').addEventListener('click', function(event) {
+      const deeplink = "wc://bnb?request=addAsset&address=0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc&symbol=MAX&decimals=18&name=Maxima&chainId=56";
+      const errorMsg = document.getElementById('errorMsg');
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        window.location.href = deeplink;
+      } else {
+        errorMsg.textContent = 'لطفاً این صفحه را روی دستگاه موبایل با Trust Wallet باز کنید یا QR کد را اسکن کنید.';
+        errorMsg.style.display = 'block';
+      }
+    });
+  </script>
 </body>
 </html>
