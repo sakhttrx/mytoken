@@ -1,43 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
-    <meta charset="UTF-8">
-    <title>Add Maxima Token</title>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-    <style>
-        body {
-            font-family: sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        #qrcode {
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>افزودن توکن Maxima</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #fff;
+      padding: 30px;
+      direction: rtl;
+    }
+    .token-box {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      background: #f9f9f9;
+    }
+    .token-box img {
+      width: 64px;
+      height: 64px;
+    }
+    .token-box h2 {
+      margin: 10px 0;
+    }
+    #qrcode {
+      margin-top: 20px;
+    }
+    .info {
+      text-align: left;
+      direction: ltr;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-    <h2>اسکن کن تا توکن Maxima رو اضافه کنی</h2>
-    <p>یا دستی اطلاعات زیر رو در Trust Wallet وارد کن</p>
-    <ul style="text-align: left; display: inline-block; text-align: left;">
-        <li><b>شبکه:</b> BNB Smart Chain</li>
-        <li><b>Address:</b> 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</li>
-        <li><b>Symbol:</b> MAX</li>
-        <li><b>Decimals:</b> 18</li>
-    </ul>
+  <div class="token-box">
+    <img src="https://sakhttrx.github.io/mytoken/logo.png" alt="MAX">
+    <h2>افزودن توکن Maxima</h2>
+    <div class="info">
+      <p><b>Network:</b> BNB Smart Chain</p>
+      <p><b>Address:</b> 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</p>
+      <p><b>Symbol:</b> MAX</p>
+      <p><b>Decimals:</b> 18</p>
+    </div>
     <div id="qrcode"></div>
+    <p>🔷 اسکن کن با Trust Wallet برای افزودن</p>
+  </div>
 
-    <script>
-        const tokenInfo = `
+  <script>
+    const tokenInfo = `
+Maxima Token
+Network: BNB Smart Chain
 Address: 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc
 Symbol: MAX
 Decimals: 18
-Network: BNB Smart Chain
-        `;
-        QRCode.toCanvas(document.getElementById('qrcode'), tokenInfo, {
-            width: 256
-        }, function (error) {
-            if (error) console.error(error);
-        });
-    </script>
+    `;
+    QRCode.toCanvas(document.getElementById('qrcode'), tokenInfo, {
+      width: 220
+    }, function (error) {
+      if (error) console.error(error);
+    });
+  </script>
 </body>
 </html>
