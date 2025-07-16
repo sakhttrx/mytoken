@@ -1,114 +1,78 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>افزودن توکن Maxima به Trust Wallet</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      text-align: right;
-    }
-    .container {
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      max-width: 500px;
-      width: 100%;
-    }
-    h1 {
-      color: #333;
-      font-size: 24px;
-      text-align: center;
-    }
-    .token-info {
-      margin: 20px 0;
-      line-height: 1.6;
-    }
-    .token-info p {
-      margin: 5px 0;
-    }
-    .btn {
-      display: block;
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 16px;
-      margin-top: 20px;
-    }
-    .btn:hover {
-      background-color: #0056b3;
-    }
-    .qr-code {
-      text-align: center;
-      margin-top: 20px;
-    }
-    .qr-code img {
-      max-width: 200px;
-      height: auto;
-    }
-    .error {
-      color: red;
-      text-align: center;
-      margin-top: 10px;
-    }
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-      }
-      h1 {
-        font-size: 20px;
-      }
-      .btn {
-        font-size: 14px;
-      }
-      .qr-code img {
-        max-width: 150px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Maxima Token to Wallet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>توکن Maxima</h1>
-    <div class="token-info">
-      <p><strong>نام توکن:</strong> Maxima</p>
-      <p><strong>نماد:</strong> MAX</p>
-      <p><strong>آدرس قرارداد:</strong> 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</p>
-      <p><strong>تعداد اعشار:</strong> 18</p>
-      <p><strong>شبکه:</strong> BNB Smart Chain (BEP-20)</p>
+    <div>
+        <button onclick="addToken()">Add Maxima Token to Wallet</button>
+        <div id="status"></div>
     </div>
-    <a href="wc://bnb?request=addAsset&address=0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc&symbol=MAX&decimals=18&name=Maxima&chainId=56" id="addTokenBtn" class="btn">افزودن به Trust Wallet</a>
-    <div class="qr-code">
-      <p>یا QR کد زیر را با Trust Wallet اسکن کنید:</p>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=wc%3A%2F%2Fbnb%3Frequest%3DaddAsset%26address%3D0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc%26symbol%3DMAX%26decimals%3D18%26name%3DMaxima%26chainId%3D56" alt="QR Code for Maxima Token">
-    </div>
-    <p id="errorMsg" class="error" style="display: none;"></p>
-  </div>
-  <script>
-    document.getElementById('addTokenBtn').addEventListener('click', function(event) {
-      const deeplink = "wc://bnb?request=addAsset&address=0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc&symbol=MAX&decimals=18&name=Maxima&chainId=56";
-      const errorMsg = document.getElementById('errorMsg');
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      
-      if (isMobile) {
-        window.location.href = deeplink;
-      } else {
-        errorMsg.textContent = 'لطفاً این صفحه را روی دستگاه موبایل با Trust Wallet باز کنید یا QR کد را اسکن کنید.';
-        errorMsg.style.display = 'block';
-      }
-    });
-  </script>
+
+    <script>
+        async function addToken() {
+            const status = document.getElementById('status');
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const wasAdded = await window.ethereum.request({
+                        method: 'wallet_watchAsset',
+                        params: {
+                            type: 'ERC20',
+                            options: {
+                                address: '0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc',
+                                symbol: 'MAX',
+                                decimals: 18,
+                                name: 'Maxima',
+                            },
+                        },
+                    });
+
+                    if (wasAdded) {
+                        status.textContent = 'Token successfully added to wallet!';
+                        status.style.color = 'green';
+                    } else {
+                        status.textContent = 'Token was not added to wallet.';
+                        status.style.color = 'red';
+                    }
+                } catch (error) {
+                    status.textContent = 'Error: ' + error.message;
+                    status.style.color = 'red';
+                }
+            } else {
+                status.textContent = 'Please install Terra Wallet or MetaMask!';
+                status.style.color = 'red';
+            }
+        }
+    </script>
 </body>
 </html>
