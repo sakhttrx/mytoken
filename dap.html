@@ -10,12 +10,12 @@
             text-align: center;
             padding: 20px;
             background-color: #f0f0f0;
-            direction: right;
+            direction: rtl;
         }
         button {
-            padding: 10px 20px;
+            padding: 15px 30px;
             margin: 10px;
-            font-size: 16px;
+            font-size: 18px;
             cursor: pointer;
             background-color: #4CAF50;
             color: white;
@@ -31,76 +31,32 @@
             margin: 20px;
         }
         .info {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 10px;
-            text-align: right;
-        }
-        .steps {
-            text-align: right;
-            margin: 20px;
-            line-height: 1.6;
-        }
-        .steps li {
-            margin-bottom: 10px;
-        }
-        .copy-btn {
+            margin: 10px 0;
             font-size: 14px;
-            padding: 5px 10px;
-            margin: 5px;
         }
     </style>
 </head>
 <body>
-    <h1>افزودن توکن ماکسیما به تراست ولت</h1>
-    <p>برای افزودن توکن ماکسیما به تراست ولت، اطلاعات زیر را کپی کنید و مراحل را دنبال کنید.</p>
+    <h1>افزودن توکن ماکسیما</h1>
     <img src="https://sakhttrx.github.io/mytoken/logo.png" alt="لوگوی توکن ماکسیما" onerror="this.src='https://via.placeholder.com/128';">
     <div class="info">
-        <p>آدرس توکن: <span id="tokenAddress">0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</span> <button class="copy-btn" onclick="copyText('tokenAddress')">کپی</button></p>
+        <p>آدرس توکن: 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</p>
         <p>نماد: MAX</p>
         <p>اعشار: 18</p>
-        <p>لینک لوگو: <span id="tokenImage">https://sakhttrx.github.io/mytoken/logo.png</span> <button class="copy-btn" onclick="copyText('tokenImage')">کپی</button></p>
     </div>
-    <button onclick="copyAll()">کپی همه اطلاعات</button>
-
-    <div class="steps">
-        <h2>راهنمای افزودن توکن به تراست ولت</h2>
-        <ol>
-            <li>اپلیکیشن Trust Wallet را باز کنید.</li>
-            <li>به تب "Tokens" بروید و روی آیکون "+" در بالا کلیک کنید.</li>
-            <li>گزینه "Add Custom Token" را انتخاب کنید.</li>
-            <li>شبکه را روی <strong>BNB Smart Chain</strong> تنظیم کنید.</li>
-            <li>اطلاعات زیر را وارد کنید (می‌توانید از دکمه‌های کپی استفاده کنید):</li>
-            <ul>
-                <li>آدرس توکن: <strong>0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</strong></li>
-                <li>نماد: <strong>MAX</strong></li>
-                <li>اعشار: <strong>18</strong></li>
-                <li>لینک لوگو: <strong>https://sakhttrx.github.io/mytoken/logo.png</strong></li>
-            </ul>
-            <li>روی "Done" یا "Add" کلیک کنید تا توکن اضافه شود.</li>
-        </ol>
-    </div>
+    <button onclick="addToken()">افزودن به تراست ولت</button>
 
     <script>
-        function copyText(elementId) {
-            const text = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert(`کپی شد: ${text}`);
-            }).catch(err => {
-                console.error("خطا در کپی:", err);
-                alert("کپی نشد! لطفاً متن را دستی کپی کنید.");
-            });
-        }
+        function addToken() {
+            const tokenAddress = "0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc";
+            const tokenSymbol = "MAX";
+            const tokenDecimals = 18;
+            const tokenImage = "https://sakhttrx.github.io/mytoken/logo.png";
+            const bnbChainId = "56";
 
-        function copyAll() {
-            const text = `آدرس توکن: 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc\nنماد: MAX\nاعشار: 18\nلینک لوگو: https://sakhttrx.github.io/mytoken/logo.png`;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("همه اطلاعات توکن کپی شد! حالا به تراست ولت بروید و اطلاعات را در بخش 'Add Custom Token' جای‌گذاری کنید.");
-            }).catch(err => {
-                console.error("خطا در کپی:", err);
-                alert("کپی نشد! لطفاً اطلاعات را دستی کپی کنید.");
-            });
+            // Deep link for Trust Wallet
+            const deepLink = `trust://add_custom_asset?type=token&contract=${tokenAddress}&symbol=${tokenSymbol}&decimals=${tokenDecimals}&image=${encodeURIComponent(tokenImage)}&chainId=${bnbChainId}`;
+            window.location.href = deepLink;
         }
     </script>
 </body>
