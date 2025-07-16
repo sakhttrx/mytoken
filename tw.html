@@ -14,6 +14,9 @@
             margin: 0;
             background-color: #f0f0f0;
         }
+        .container {
+            text-align: center;
+        }
         button {
             padding: 15px 30px;
             font-size: 18px;
@@ -34,7 +37,7 @@
     </style>
 </head>
 <body>
-    <div>
+    <div class="container">
         <button onclick="addToken()">Add Maxima Token to Wallet</button>
         <div id="status"></div>
     </div>
@@ -42,34 +45,45 @@
     <script>
         async function addToken() {
             const status = document.getElementById('status');
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const wasAdded = await window.ethereum.request({
-                        method: 'wallet_watchAsset',
-                        params: {
-                            type: 'ERC20',
-                            options: {
-                                address: '0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc',
-                                symbol: 'MAX',
-                                decimals: 18,
-                                name: 'Maxima',
-                            },
-                        },
-                    });
 
-                    if (wasAdded) {
-                        status.textContent = 'Token successfully added to wallet!';
-                        status.style.color = 'green';
-                    } else {
-                        status.textContent = 'Token was not added to wallet.';
-                        status.style.color = 'red';
-                    }
-                } catch (error) {
-                    status.textContent = 'Error: ' + error.message;
+            if (typeof window.ethereum === 'undefined') {
+                status.textContent = 'لطفاً MetaMask یا یک کیف‌پول سازگار با Web3 نصب کنید!';
+                status.style.color = 'red';
+                return;
+            }
+
+            try {
+                // Switch to BNB Chain (chainId: 56)
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x38' }], // 0x38 is 56 in hexadecimal
+                });
+                status.textContent = 'شبکه به BNB Chain تغییر کرد.';
+                status.style.color = 'blue';
+
+                // Add token to wallet
+                const wasAdded = await window.ethereum.request({
+                    method: 'wallet_watchAsset',
+                    params: {
+                        type: 'ERC20',
+                        options: {
+                            address: '0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc',
+                            symbol: 'MAX',
+                            decimals: 18,
+                            name: 'Maxima',
+                        },
+                    },
+                });
+
+                if (wasAdded) {
+                    status.textContent = 'توکن Maxima با موفقیت به کیف‌پول اضافه شد!';
+                    status.style.color = 'green';
+                } else {
+                    status.textContent = 'توکن به کیف‌پول اضافه نشد.';
                     status.style.color = 'red';
                 }
-            } else {
-                status.textContent = 'Please install Terra Wallet or MetaMask!';
+            } catch (error) {
+                status.textContent = 'خطا: ' + error.message;
                 status.style.color = 'red';
             }
         }
