@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Maxima Token to Trust Wallet</title>
+    <title>افزودن توکن ماکسیما به تراست ولت</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
             background-color: #f0f0f0;
+            direction: right;
         }
         button {
             padding: 10px 20px;
@@ -30,55 +31,75 @@
             margin: 20px;
         }
         .info {
-            margin: 10px 0;
-            font-size: 14px;
-        }
-        #tokenInfo {
             background-color: #fff;
-            padding: 10px;
+            padding: 15px;
             border-radius: 5px;
             margin: 10px;
+            text-align: right;
+        }
+        .steps {
+            text-align: right;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .steps li {
+            margin-bottom: 10px;
+        }
+        .copy-btn {
+            font-size: 14px;
+            padding: 5px 10px;
+            margin: 5px;
         }
     </style>
 </head>
 <body>
-    <h1>Add Maxima Token to Trust Wallet</h1>
-    <p>Add the Maxima Token to your Trust Wallet.</p>
-    <img src="https://sakhttrx.github.io/mytoken/logo.png" alt="Maxima Token Logo" onerror="this.src='https://via.placeholder.com/128';">
-    <div class="info" id="tokenInfo">
-        <p>Token Address: <span id="tokenAddress">0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</span></p>
-        <p>Symbol: MAX</p>
-        <p>Decimals: 18</p>
-        <p>Logo URL: <span id="tokenImage">https://sakhttrx.github.io/mytoken/logo.png</span></p>
+    <h1>افزودن توکن ماکسیما به تراست ولت</h1>
+    <p>برای افزودن توکن ماکسیما به تراست ولت، اطلاعات زیر را کپی کنید و مراحل را دنبال کنید.</p>
+    <img src="https://sakhttrx.github.io/mytoken/logo.png" alt="لوگوی توکن ماکسیما" onerror="this.src='https://via.placeholder.com/128';">
+    <div class="info">
+        <p>آدرس توکن: <span id="tokenAddress">0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</span> <button class="copy-btn" onclick="copyText('tokenAddress')">کپی</button></p>
+        <p>نماد: MAX</p>
+        <p>اعشار: 18</p>
+        <p>لینک لوگو: <span id="tokenImage">https://sakhttrx.github.io/mytoken/logo.png</span> <button class="copy-btn" onclick="copyText('tokenImage')">کپی</button></p>
     </div>
-    <button onclick="addToken()">Add Maxima Token</button>
-    <button onclick="copyTokenInfo()">Copy Token Info</button>
+    <button onclick="copyAll()">کپی همه اطلاعات</button>
+
+    <div class="steps">
+        <h2>راهنمای افزودن توکن به تراست ولت</h2>
+        <ol>
+            <li>اپلیکیشن Trust Wallet را باز کنید.</li>
+            <li>به تب "Tokens" بروید و روی آیکون "+" در بالا کلیک کنید.</li>
+            <li>گزینه "Add Custom Token" را انتخاب کنید.</li>
+            <li>شبکه را روی <strong>BNB Smart Chain</strong> تنظیم کنید.</li>
+            <li>اطلاعات زیر را وارد کنید (می‌توانید از دکمه‌های کپی استفاده کنید):</li>
+            <ul>
+                <li>آدرس توکن: <strong>0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</strong></li>
+                <li>نماد: <strong>MAX</strong></li>
+                <li>اعشار: <strong>18</strong></li>
+                <li>لینک لوگو: <strong>https://sakhttrx.github.io/mytoken/logo.png</strong></li>
+            </ul>
+            <li>روی "Done" یا "Add" کلیک کنید تا توکن اضافه شود.</li>
+        </ol>
+    </div>
 
     <script>
-        const tokenAddress = "0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc";
-        const tokenSymbol = "MAX";
-        const tokenDecimals = 18;
-        const tokenImage = "https://sakhttrx.github.io/mytoken/logo.png";
-        const bnbChainId = "56"; // BNB Smart Chain (decimal)
-
-        async function addToken() {
-            // Try Trust Wallet deep link
-            const deepLink = `trust://add_custom_asset?type=token&contract=${tokenAddress}&symbol=${tokenSymbol}&decimals=${tokenDecimals}&image=${encodeURIComponent(tokenImage)}&chainId=${bnbChainId}`;
-            window.location.href = deepLink;
-
-            // Fallback after 3 seconds
-            setTimeout(() => {
-                alert(`Could not add token automatically. Please add it manually:\n1. Open Trust Wallet\n2. Tap "Manage Tokens" or "+" icon\n3. Select "Add Custom Token"\n4. Choose BNB Smart Chain\n5. Enter these details:\nAddress: ${tokenAddress}\nSymbol: ${tokenSymbol}\nDecimals: ${tokenDecimals}\nLogo URL: ${tokenImage}\n\nYou can copy the details using the "Copy Token Info" button.`);
-            }, 3000);
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert(`کپی شد: ${text}`);
+            }).catch(err => {
+                console.error("خطا در کپی:", err);
+                alert("کپی نشد! لطفاً متن را دستی کپی کنید.");
+            });
         }
 
-        function copyTokenInfo() {
-            const text = `Token Address: ${tokenAddress}\nSymbol: ${tokenSymbol}\nDecimals: ${tokenDecimals}\nLogo URL: ${tokenImage}`;
+        function copyAll() {
+            const text = `آدرس توکن: 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc\nنماد: MAX\nاعشار: 18\nلینک لوگو: https://sakhttrx.github.io/mytoken/logo.png`;
             navigator.clipboard.writeText(text).then(() => {
-                alert("Token details copied to clipboard! Paste them in Trust Wallet under 'Add Custom Token'.");
+                alert("همه اطلاعات توکن کپی شد! حالا به تراست ولت بروید و اطلاعات را در بخش 'Add Custom Token' جای‌گذاری کنید.");
             }).catch(err => {
-                console.error("Failed to copy:", err);
-                alert("Failed to copy. Please manually copy the token details.");
+                console.error("خطا در کپی:", err);
+                alert("کپی نشد! لطفاً اطلاعات را دستی کپی کنید.");
             });
         }
     </script>
