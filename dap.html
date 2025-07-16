@@ -35,7 +35,7 @@
 <body>
     <h1>Add Maxima Token to Trust Wallet</h1>
     <p>Connect your Trust Wallet and add the Maxima Token with logo.</p>
-    <img src="https://sakhttrx.github.io/mytoken/logo.png" alt="Maxima Token Logo">
+    <img src="https://sakhttrx.github.io/mytoken/logo.png" alt="Maxima Token Logo" onerror="this.src='https://via.placeholder.com/128';">
     <p>Token Address: 0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc</p>
     <p>Symbol: MAX</p>
     <p>Decimals: 18</p>
@@ -44,52 +44,92 @@
 
     <script>
         let web3;
+        const tokenAddress = "0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc";
+        const tokenSymbol = "MAX";
+        const tokenDecimals = 18;
+        const tokenImage = "https://sakhttrx.github.io/mytoken/logo.png";
+        const bnbChainId = "0x38"; // BNB Smart Chain
+
+        // Check if we're in Trust Wallet's browser
+        const isTrustWallet = navigator.userAgent.includes("Trust");
+
+        async function switchToBNBChain() {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: bnbChainId }],
+                });
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{
+                            chainId: bnbChainId,
+                            chainName: 'Binance Smart Chain',
+                            nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                            rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                            blockExplorerUrls: ['https://bscscan.com'],
+                        }],
+                    });
+                } else {
+                    console.error('Error switching to BNB Chain:', switchError);
+                    throw switchError;
+                }
+            }
+        }
 
         async function connectWallet() {
-            if (window.ethereum) {
+            if (isTrustWallet && window.ethereum) {
                 web3 = new Web3(window.ethereum);
                 try {
                     await window.ethereum.request({ method: 'eth_requestAccounts' });
                     alert("Connected to Trust Wallet successfully!");
                 } catch (error) {
                     console.error("Connection failed:", error);
-                    alert("Failed to connect. Open this page in Trust Wallet's browser.");
+                    alert("Failed to connect. Please ensure Trust Wallet is active.");
                 }
             } else {
-                alert("Please open this page in Trust Wallet's browser!");
+                // Try to open Trust Wallet app via deep link
+                window.location.href = "trust://open";
+                setTimeout(() => {
+                    alert("Please open this page in Trust Wallet's browser or install Trust Wallet.");
+                }, 1000);
             }
         }
 
         async function addToken() {
-            const tokenAddress = "0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc";
-            const tokenSymbol = "MAX";
-            const tokenDecimals = 18;
-            const tokenImage = "https://sakhttrx.github.io/mytoken/logo.png";
-
-            try {
-                // Try wallet_watchAsset (may not work on Trust Wallet)
-                const wasAdded = await window.ethereum.request({
-                    method: 'wallet_watchAsset',
-                    params: {
-                        type: 'ERC20',
-                        options: {
-                            address: tokenAddress,
-                            symbol: tokenSymbol,
-                            decimals: tokenDecimals,
-                            image: tokenImage,
+            if (isTrustWallet && window.ethereum) {
+                try {
+                    await switchToBNBChain();
+                    const wasAdded = await window.ethereum.request({
+                        method: 'wallet_watchAsset',
+                        params: {
+                            type: 'ERC20',
+                            options: {
+                                address: tokenAddress,
+                                symbol: tokenSymbol,
+                                decimals: tokenDecimals,
+                                image: tokenImage,
+                            },
                         },
-                    },
-                });
-                if (wasAdded) {
-                    alert("Maxima Token added to Trust Wallet with logo!");
-                    return;
+                    });
+                    if (wasAdded) {
+                        alert("Maxima Token added to Trust Wallet!");
+                        return;
+                    }
+                } catch (error) {
+                    console.error("wallet_watchAsset failed:", error);
                 }
-            } catch (error) {
-                console.error("wallet_watchAsset failed:", error);
             }
 
-            // Fallback: Prompt user to manually add token
-            alert("Trust Wallet may not support wallet_watchAsset. Please add the token manually:\n1. Open Trust Wallet\n2. Go to 'Add Custom Token'\n3. Select BNB Smart Chain\n4. Enter the following details:\nAddress: " + tokenAddress + "\nSymbol: " + tokenSymbol + "\nDecimals: " + tokenDecimals + "\nThen check if the logo appears from: " + tokenImage);
+            // Fallback: Deep link to add token or manual instructions
+            const deepLink = `trust://add_asset?asset_type=token&contract_address=${tokenAddress}&symbol=${tokenSymbol}&decimals=${tokenDecimals}&image=${encodeURIComponent(tokenImage)}`;
+            window.location.href = deepLink;
+
+            // Show manual instructions as fallback
+            setTimeout(() => {
+                alert(`Could not add token automatically. Please add it manually in Trust Wallet:\n1. Open Trust Wallet\n2. Go to 'Add Custom Token'\n3. Select BNB Smart Chain\n4. Enter the following details:\nAddress: ${tokenAddress}\nSymbol: ${tokenSymbol}\nDecimals: ${tokenDecimals}\nLogo URL: ${tokenImage}`);
+            }, 1000);
         }
     </script>
 </body>
