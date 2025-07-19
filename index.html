@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دسترسی غیرمجاز</title>
+    <title>صفحه اصلی توکن</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,18 +11,37 @@
             direction: rtl;
             background-color: #f4f4f4;
             margin: 0;
-            padding: 50px;
+            padding: 20px;
         }
         h1 {
             color: #333;
         }
-        p {
-            color: #666;
+        .file-list {
+            list-style: none;
+            padding: 0;
+        }
+        .file-list li {
+            margin: 10px 0;
+        }
+        .file-list a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 18px;
+        }
+        .file-list a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <h1>دسترسی غیرمجاز</h1>
-    <p>لطفاً آدرس فایل مورد نظر خود را وارد کنید.</p>
+    <h1>Welcome to the Tokens Page</h1>
+    <p>Please select one of the files below:</p>
+    <ul class="file-list">
+        <li><a href="tw.html">Token 1 (tw.html)</a></li>
+        <li><a href="file2.html">Token 2 (tb1.html)</a></li>
+        <li><a href="file3.html">Token 3 (file3.html)</a></li>
+        <li><a href="file4.html">Token 4 (file4.html)</a></li>
+        <li><a href="file5.html">Token 5 (file5.html)</a></li>
+    </ul>
 </body>
 </html>
