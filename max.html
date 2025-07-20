@@ -3,98 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Maxima to MetaMask (Desktop)</title>
+    <title>Maxima Token - Official Website</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            background-color: #f0f0f0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
         }
-        .container {
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem;
             text-align: center;
         }
-        img {
-            width: 150px;
-            cursor: pointer;
-            animation: pulse 1.5s infinite ease-in-out;
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        nav {
+            background-color: #34495e;
+            padding: 1rem;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: #e74c3c;
+        }
+        .content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .content h2 {
+            color: #2c3e50;
+        }
+        .content p {
+            text-align: justify;
+        }
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://sakhttrx.github.io/mytoken/click.png" onclick="addToken()" alt="Add Token" onerror="this.src='https://via.placeholder.com/150'; console.log('Click image failed to load');">
+    <header>
+        <h1>Maxima Token</h1>
+        <p>Empowering the Future of Decentralized Finance</p>
+    </header>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <div class="content">
+        <section id="home">
+            <h2>Welcome to Maxima</h2>
+            <p>Maxima is a cutting-edge ERC-20 token built on the Ethereum blockchain, designed to serve as a robust utility token with a total supply of 900 billion units. This project aims to revolutionize decentralized applications and services by providing a scalable and accessible platform for seamless transactions and ecosystem integration.</p>
+        </section>
+        <section id="about">
+            <h2>About Maxima</h2>
+            <p>Maxima leverages OpenZeppelin’s secure smart contract standards, ensuring reliability and trust. With a focus on community-driven development, the token is poised to integrate with various decentralized platforms, offering innovative solutions for the blockchain space. Stay tuned for our upcoming token generation event.</p>
+        </section>
     </div>
-
-    <script>
-        async function switchToBNBChain() {
-            try {
-                await window.ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x38' }],
-                });
-            } catch (switchError) {
-                if (switchError.code === 4902) {
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [
-                            {
-                                chainId: '0x38',
-                                chainName: 'Binance Smart Chain',
-                                nativeCurrency: {
-                                    name: 'BNB',
-                                    symbol: 'BNB',
-                                    decimals: 18,
-                                },
-                                rpcUrls: ['https://bsc-dataseed.binance.org/'],
-                                blockExplorerUrls: ['https://bscscan.com'],
-                            },
-                        ],
-                    });
-                } else {
-                    console.error('Error switching to BNB Chain:', switchError);
-                }
-            }
-        }
-
-        async function addToken() {
-            if (!window.ethereum) {
-                console.error('MetaMask is not installed. Please install MetaMask extension.');
-                return;
-            }
-
-            if (!window.ethereum.isMetaMask) {
-                console.error('Ethereum provider detected, but it is not MetaMask.');
-                return;
-            }
-
-            try {
-                await window.ethereum.request({ method: 'eth_requestAccounts' });
-                await switchToBNBChain();
-                await window.ethereum.request({
-                    method: 'wallet_watchAsset',
-                    params: {
-                        type: 'ERC20',
-                        options: {
-                            address: '0xfd33fCE6FfbA4b70Ad183702D7E58C055a1500fc',
-                            symbol: 'MAX',
-                            decimals: 18,
-                            image: 'https://sakhttrx.github.io/mytoken/max.png',
-                        },
-                    },
-                });
-            } catch (error) {
-                console.error('Error adding token:', error);
-            }
-        }
-    </script>
+    <footer>
+        <p>&copy; 2025 Maxima Token. All rights reserved.</p>
+    </footer>
 </body>
 </html>
